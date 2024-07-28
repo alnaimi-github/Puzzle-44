@@ -1,0 +1,29 @@
+﻿@page "/"
+
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage LocalStorage
+
+<h1>Protcted Local Storage Demo</h1>
+
+<button @onclick="Save">Save Data to Protected Local Storage</button>
+<button @onclick="Load">Load Data from Protected Local Storage</button>
+
+<p>@Message</p>
+
+<p>How can we move this code to a component in a Razor Class Library?</p>
+
+@code
+{
+    private string Message { get; set; } = string.Empty;
+
+    private async Task Save()
+    {
+        await LocalStorage.SetAsync("blazor-data", $"The Time is {DateTime.Now.ToLongTimeString()}");
+    }
+
+    private async Task Load()
+    {
+        var result = await LocalStorage.GetAsync<string>("blazor-data");
+        Message = result.Value;
+    }
+}
